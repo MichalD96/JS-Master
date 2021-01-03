@@ -1,11 +1,10 @@
 
 **Code creator: [Michal__d](https://github.com/MichalD96)**
 
-You can use/modify this code if you add link to this [repository](https://github.com/MichalD96/JS-Master) over the code you used.
-
-License: MIT
+You can use/modify this code if (read [license](https://github.com/MichalD96/JS-Master/blob/master/LICENSE)) and add link to this [repository](https://github.com/MichalD96/JS-Master) over the code you used.
 
 <hr>
+<br>
 
 ## **Calculate average array of arrays:**
 
@@ -88,7 +87,7 @@ Video.init(videosCollection);
 **How to use:**
 
 ```javascript
-// assign every video to the variable so as not to refer every time to the class, ['broken'] is name of particular video
+// assign every video to the variable so as not to refer every time to the class
 const dragons = Video.videos['dragons']; // `Video` is the class, `videos` is object of all videos, ['dragons'] is the name of particular video (you can also use: `Video.videos.dragons` but first method is safer)
 
 dragons.getLink(0, 5); // returns only video URL starting from 0 min and 5 seconds
@@ -97,4 +96,100 @@ dragons.getHTML(0, 5); // returns HTML a element with href= video url starting f
 // append created element on the site:
 document.querySelector('body').append(broken.getHTML());  // if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
 
+```
+
+<hr>
+<br>
+
+## **Nesting multiple functions in order of execution context:**
+
+```javascript
+const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
+
+// (assume we have already created functions one, two, three, four) result of this expression:
+one(two(three(four(10))))
+// is equal to:
+executeInOrder(one, two, three, four)(10);
+```
+
+
+<hr>
+<br>
+
+## **Advanced data loader:**
+
+Execute fetch of all website data, store it until the rest of the code will be loaded and ready to use it
+```javascript
+class Loader {
+  static promises = {};
+  static urls = new Set();
+  static fetchProperties = { method: 'GET', cache: 'no-cache' };
+
+  static fetchData(urls) {
+    urls.forEach(url => {
+      this.urls.add(url);
+      const fileName = this.getName(url);
+
+      if (!this.promises[fileName])
+        this.promises[fileName] = new Loader(url);
+      else
+        throw new Error(`"${fileName}" already registered!`);
+    });
+
+    this.contentLoaded = new Promise(resolve => this.resolveContentLoaded = resolve);
+  }
+  constructor(url, noCache = null) {
+    this._json = (async () => {
+      try {
+        const response = await fetch(url, noCache || Loader.fetchProperties);
+        return await response.json();
+      } catch (err) {
+        throw new Error(`Failed to load: ${url}\n${err}`);
+      }
+    })();
+  }
+  execute(...args) {
+    const json = this._json;
+    delete this._json;
+    return json.then(...args);
+  }
+  static reloadData(name) {
+    delete this.promises[name];
+    const url = this.urls.find(url => this.getName(url) === name);
+    this.promises[name] = new Loader(url, { cache: 'no-cache' });
+  }
+  static set fetchOptions(obj) {
+    this.fetchProperties = Object.assign(this.fetchProperties, obj);
+  }
+  static getName(url) {
+    return url.split('/').pop().split('.', 1)[0];
+  }
+}
+
+const urlsSetOne = [
+  'https://jsonplaceholder.typicode.com/users',
+];
+const urlsSetTwo = [
+  'https://jsonplaceholder.typicode.com/posts',
+  'https://jsonplaceholder.typicode.com/albums',
+];
+
+Loader.fetchOptions = { method: 'GET', cache: 'no-cache' };
+Loader.fetchData(urlsSetOne); // Execute this run fetch of all data
+
+Loader.fetchOptions = { method: 'POST' };
+Loader.fetchData(urlsSetTwo);
+
+
+// Loader.promises returns new Promise then assigning it to variable allows to use it with Promise.all and confirm that everything has been loaded
+const f1 = Loader.promises['users'].execute(data => { console.log(data) });
+const f2 = Loader.promises['posts'].execute(data => { console.log(data) });
+const f3 = Loader.promises['albums'].execute(data => { console.log(data) });
+
+Promise.all([f1, f2, f3]).then(Loader.resolveContentLoaded);
+
+Loader.contentLoaded.then(() => { console.log('All data loaded') });
+
+// you can reload data by:
+Loader.reloadData('users');
 ```
