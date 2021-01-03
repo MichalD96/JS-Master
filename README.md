@@ -122,13 +122,13 @@ The main advantage of that method is readability of the code.
 
 `fns.reduce((acc, fn) => fn(acc), x)` method `.reduce()` execute every function and store the final value in `acc`,
 
-  `acc` takes the value of result of last executed function,
+`acc` takes the value of result of last executed function,
 
-  `fn` is currently executing function,
+`fn` is currently executing function,
 
-  `fn(acc)` execute callback with last function result as a argument,
+`fn(acc)` execute callback with last function result as an argument,
 
-  `x` is a value provided to .reduce() method as a start value,
+`x` is a value provided to .reduce() method as a start value,
 
 
 <hr>
