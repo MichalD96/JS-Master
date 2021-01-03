@@ -107,9 +107,11 @@ document.querySelector('body').append(broken.getHTML());  // if you not provide 
 const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
 
 // (assume we have already created functions one, two, three, four) result of this expression:
-one(two(three(four(10))))
+four(three(two(one(10))));
 // is equal to:
 executeInOrder(one, two, three, four)(10);
+
+// if you prefer to provide arguments in reverse order you can use `.reduceRight()` method
 ```
 
 
