@@ -110,9 +110,25 @@ const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
 four(three(two(one(10))));
 // is equal to:
 executeInOrder(one, two, three, four)(10);
-
-// if you prefer to provide arguments in reverse order you can use `.reduceRight()` method
+// in this case value 10 is provided as an argument to the function one, the result of function one is provided to function two....
 ```
+If you prefer to provide arguments in reverse order you can use `.reduceRight()` method.
+
+The main advantage of that method is readability of the code.
+
+`(...fns)` is the set of callback functions that will be executed from left to right.
+
+`x` is our first argument provided to function `one`
+
+`fns.reduce((acc, fn) => fn(acc), x)` method `.reduce()` execute every function and store the final value in `acc`,
+
+  `acc` takes the value of result of last executed function,
+
+  `fn` is currently executing function,
+
+  `fn(acc)` execute callback with last function result as a argument,
+
+  `x` is a value provided to .reduce() method as a start value,
 
 
 <hr>
