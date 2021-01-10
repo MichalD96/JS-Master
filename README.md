@@ -1,7 +1,7 @@
 
 **Code creator: [Michal__d](https://github.com/MichalD96)**
 
-You can use/modify this code if (read [license](https://github.com/MichalD96/JS-Master/blob/master/LICENSE)) and add link to this [repository](https://github.com/MichalD96/JS-Master) over the code you used.
+You can use/modify this code if (read [license](https://github.com/MichalD96/JS-Master/blob/master/LICENSE)) and add link to this [repository](https://github.com/MichalD96/JS-Master) above the code you used.
 
 <hr>
 <br>
