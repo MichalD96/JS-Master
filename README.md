@@ -88,7 +88,8 @@ Video.init(videosCollection);
 
 ```javascript
 // assign every video to the variable so as not to refer every time to the class
-const dragons = Video.videos['dragons']; // `Video` is the class, `videos` is object of all videos, ['dragons'] is the name of particular video (you can also use: `Video.videos.dragons` but first method is safer)
+const dragons = Video.videos['dragons']; // `Video` is the class, `videos` is object of all videos,
+// ['dragons'] is the name of particular video (you can also use: `Video.videos.dragons` but first method is safer)
 
 dragons.getLink(0, 5); // returns only video URL starting from 0 min and 5 seconds
 dragons.getHTML(0, 5); // returns HTML a element with href= video url starting from 0 min and 5 seconds
@@ -199,7 +200,8 @@ Loader.fetchOptions = { method: 'POST' };
 Loader.fetchData(urlsSetTwo);
 
 
-// Loader.promises returns new Promise then assigning it to variable allows to use it with Promise.all and confirm that everything has been loaded
+// Loader.promises returns new Promise then assigning it to variable
+// allows to use it with Promise.all and confirm that everything has been loaded
 const f1 = Loader.promises['users'].execute(data => { console.log(data) });
 const f2 = Loader.promises['posts'].execute(data => { console.log(data) });
 const f3 = Loader.promises['albums'].execute(data => { console.log(data) });
@@ -211,3 +213,60 @@ Loader.contentLoaded.then(() => { console.log('All data loaded') });
 // you can reload data by:
 Loader.reloadData('users');
 ```
+<hr>
+<br>
+
+## **Custom Super Event Listener:**
+
+This eventListener listen multiple events on one element.
+It base on the same syntax as regular `addEventListener()`
+`element.addListener(events array, callback[, configuration object*])`
+* - optional
+
+```javascript
+Object.defineProperty(EventTarget.prototype, 'addListener', {
+  value: function (eventsArray, callback, config) {
+    const configObject = Object.assign({ capture: false, passive: false, once: false }, config);
+    eventsArray.forEach(captureEvent => {
+      this.addEventListener(captureEvent, event => {
+        callback(event);
+      }, configObject);
+    });
+  },
+  enumerable: false,
+  configurable: false,
+  writable: false,
+});
+
+document.querySelector('button')
+  .addListener(['contextmenu', 'click', 'mouseover', 'mousedown'], event => {
+    event.preventDefault();
+    console.log(event);
+    event.stopPropagation();
+  }, { capture: true });
+```
+
+<hr>
+<br>
+
+## **Recursive deep copying of an object:**
+
+```javascript
+function objectDeepCopy(oldObj = {}, newObj) {
+  if (oldObj === null || typeof oldObj !== 'object' || ![Object, Array].includes(oldObj.constructor))
+    return oldObj;
+  if ([Date, RegExp, Function, String, Number, Boolean].includes(oldObj.constructor))
+    return new oldObj.constructor(oldObj);
+
+  newObj = newObj || new oldObj.constructor();
+
+  for (const name in oldObj) {
+    newObj[name] = typeof newObj[name] === 'undefined' ? objectDeepCopy(oldObj[name], null) : newObj[name];
+  }
+
+  return newObj;
+}
+
+```
+Unfortunately there is no way to copy `getter` and `setter` from an object,
+but that is the only limitation.
