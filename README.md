@@ -221,7 +221,6 @@ Loader.reloadData('users');
 This eventListener listen multiple events on one element.
 It base on the same syntax as regular `addEventListener()`
 `element.addListener(events array, callback[, configuration object*])`
-* - optional
 
 ```javascript
 Object.defineProperty(EventTarget.prototype, 'addListener', {
