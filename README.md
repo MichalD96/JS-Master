@@ -95,7 +95,7 @@ dragons.getLink(0, 5); // returns only video URL starting from 0 min and 5 secon
 dragons.getHTML(0, 5); // returns HTML a element with href= video url starting from 0 min and 5 seconds
 
 // append created element on the site:
-document.querySelector('body').append(broken.getHTML());  // if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
+document.querySelector('body').append(dragons.getHTML());  // if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
 
 ```
 
