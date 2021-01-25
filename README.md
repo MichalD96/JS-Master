@@ -95,7 +95,8 @@ dragons.getLink(0, 5); // returns only video URL starting from 0 min and 5 secon
 dragons.getHTML(0, 5); // returns HTML a element with href= video url starting from 0 min and 5 seconds
 
 // append created element on the site:
-document.querySelector('body').append(dragons.getHTML());  // if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
+document.querySelector('body').append(dragons.getHTML());
+// if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
 
 ```
 
@@ -111,7 +112,8 @@ const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
 four(three(two(one(10))));
 // is equal to:
 executeInOrder(one, two, three, four)(10);
-// in this case value 10 is provided as an argument to the function one, the result of function one is provided to function two....
+// in this case value 10 is provided as an argument to the function one,
+// the result of function one is provided to function two....
 ```
 If you prefer to provide arguments in reverse order you can use `.reduceRight()` method.
 
@@ -269,3 +271,91 @@ function objectDeepCopy(oldObj = {}, newObj) {
 ```
 Unfortunately there is no way to copy `getter` and `setter` from an object,
 but that is the only limitation.
+
+<hr>
+<br>
+
+## **Get search query [key, value] pairs.<br>Generate search quey string from specific localStorage values**
+
+Query string is convenient way to set some site properties.
+
+```javascript
+const SearchQuery = (settingsPrefix => {
+  return {
+    getParameter(name, url = window.location.search) {
+      const obj = Object.create(null);
+      new URLSearchParams(url).forEach((value, key) =>
+        obj[key] = value ? JSON.parse(value) : '');
+
+      return obj[name] || null;
+    },
+    getUrl() {
+      const { protocol, hostname, pathname, port } = location;
+      const url = `${protocol}//${hostname}${port ? ':' + port : ''}${pathname}`;
+      const obj = Object.create(null);
+      Object.entries(localStorage).forEach(([key, value]) => {
+        if (key.startsWith(settingsPrefix))
+          obj[key.replace(settingsPrefix, '')] = JSON.parse(value);
+      });
+      const search = Object.entries(obj)
+        .map(pair => pair.map(encodeURIComponent).join('='))
+        .join('&');
+
+      return `${url}?${search}`;
+    }
+  }
+})('main.');
+```
+
+If you set prefix `"main."` before every localStorage key you want to include to search query
+function `SearchQuery.getUrl()` return full link to the site with all values from localStorage.
+`SearchQuery.getParameter(<name> [, location]);` returns value of that property
+
+
+<hr>
+<br>
+
+## **Linear proportion with cut values out of range**
+`value` - number to convert,
+`iMin` - input range minimum,
+`iMax` - input range maximum,
+`oMin` - output range minimum,
+`oMax` - output range maximum;
+
+```javascript
+function linear(value, iMin, iMax, oMin, oMax) {
+  const clamp = (num, min, max) =>
+    num <= min ? min : num >= max ? max : num;
+  return clamp((((value - iMin) / (iMax - iMin)) * (oMax - oMin) + oMin), oMin, oMax);
+}
+```
+ex.
+`linear(4, 0, 10, 0, 100);`   4 is 40% of range 0 to 10 so final value is 40% of range 0 to 100 = 40
+`linear(12, 0, 10, 0, 100);`  12 is 120% of range 0 to 10 so final value is 120% of range 0 to 100 = 120 BUT:
+  it clamps the final value to output range maximum = 100
+
+<hr>
+<br>
+
+## **Easily convert string to 12/24 hours clock format (browser only)**
+
+```javascript
+function convertToTime(hours = '00', minutes = '00', format12 = navigator.hour12) {
+  minutes = minutes.toString().padStart(2, '0');
+  return (format12 || false) ?
+    `${hours}:${minutes}` :
+    `${+hours % 12 || 12}:${minutes} ${+hours < 12 ? 'AM' : 'PM'}`;
+}
+
+function convertToTime(hours = '00', minutes = '00', format12 = navigator.hour12) {
+  return new Date('1970-01-01T' + `${hours}:${minutes.toString().padStart(2, '0')}:00` + '.000Z')
+    .toLocaleTimeString({},
+      { timeZone: 'UTC', hour12: format12 , hour: 'numeric', minute: 'numeric' }
+    );
+}
+```
+In both cases `convertToTime(16, 45)` returns "16:45" or "4:45",
+however first method has much better performance.
+
+It begins noticeable on less efficient PCs,
+if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
