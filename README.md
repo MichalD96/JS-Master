@@ -411,7 +411,7 @@ Object.defineProperty(String.prototype, 'padding', {
   },
 });
 ```
-`(16.35).padding(4, 7)` = 0016.3500000
+`(16.35).padding(4, 7)` = "0016.3500000"
 
 the limitation is 15 integers, decimal places are limited to standard JS precision = 17
 
