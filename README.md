@@ -388,3 +388,35 @@ however first method has much better performance.
 It begins noticeable on less efficient PCs,
 
 if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
+
+<hr>
+<br>
+
+## **Better method of `.padStart()` and `.padEnd()` combined in one method:**
+
+`.padStart()` and `.padEnd()` does not support negative numbers, my script has no problem with it
+
+```javascript
+Object.defineProperty(String.prototype, 'padding', {
+  value: function (s, x) {
+    let number = +this;
+    let prefix = '';
+    if (number < 0) {
+      prefix = '-';
+      number *= -1;
+    }
+    const num = prefix + (1e15 + ((x > 0) ? Math.floor(number) : Math.round(number))).toString().slice(-s);
+    const dec = (x >= 0) ? (number % 1).toFixed(x).slice(1) : '';
+    return `${num}${dec}`;
+  },
+});
+```
+`(16.35).padding(4, 7)` = 0016.3500000
+
+the limitation is 15 integers, decimal places are limited to standard JS precision = 17
+
+so you should never go over `.padding(15, 17);`
+
+also script can add only '0' on the beginning and on the end, but who needs anything else?
+
+
