@@ -44,13 +44,15 @@ averageArray(...Object.values(arrays)); // function returns: [37, 74, 111, 148, 
 ## **Dynamically generate YouTube video link:**
 
 This class has been made to generate YT video links or HTML code (a elements).
+
 You need only video ID. You can find video ID in link search query, preceded by `?v=` and ends before `&`.
 
 
 ```javascript
 // array of objects to create links
 // name must be one word, it will be used as object key
-// `linkProperties` - object with custom properties for the link (`customLinkName` - innerText of `<a>` element, `class` - array of classes added to `<a>` element)
+// `linkProperties` - object with custom properties for the link
+// (`customLinkName` - innerText of `<a>` element, `class` - array of classes added to `<a>` element)
 const videosCollection = [
   { name: 'broken', videoId: 'oAscVnqeF00', linkProperties: { customLinkName: 'Broken', class: ['yt-video-link', 'vid'] } },
   { name: 'dragons', videoId: '7wtfhZwyrcc' },
@@ -86,19 +88,27 @@ Video.init(videosCollection);
 ```
 **How to use:**
 
-```javascript
-// assign every video to the variable so as not to refer every time to the class
-const dragons = Video.videos['dragons']; // `Video` is the class, `videos` is object of all videos,
-// ['dragons'] is the name of particular video (you can also use: `Video.videos.dragons` but first method is safer)
+Assign every video to the variable so as not to refer every time to the class
 
-dragons.getLink(0, 5); // returns only video URL starting from 0 min and 5 seconds
-dragons.getHTML(0, 5); // returns HTML a element with href= video url starting from 0 min and 5 seconds
+`const dragons = Video.videos['dragons']; `
 
-// append created element on the site:
-document.querySelector('body').append(dragons.getHTML());
-// if you not provide arguments to getHTML or getLink methods, video will start from the beginning.
+`Video` is the class, `videos` is object of all videos,
 
-```
+`['dragons']` is the name of particular video (you can also use:
+
+`Video.videos.dragons` but first method is safer)
+
+`dragons.getLink(0, 5);` returns only video URL starting from 0 min and 5 seconds
+
+`dragons.getHTML(0, 5);` returns HTML a element with href= video url starting from 0 min and 5 seconds
+
+Append created element on the site:
+
+`document.querySelector('body').append(dragons.getHTML());`
+
+If you not provide arguments to getHTML or getLink methods, video will start from the beginning.
+
+
 
 <hr>
 <br>
@@ -107,14 +117,20 @@ document.querySelector('body').append(dragons.getHTML());
 
 ```javascript
 const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
-
-// (assume we have already created functions one, two, three, four) result of this expression:
-four(three(two(one(10))));
-// is equal to:
-executeInOrder(one, two, three, four)(10);
-// in this case value 10 is provided as an argument to the function one,
-// the result of function one is provided to function two....
 ```
+
+(assume we have already created functions one, two, three, four) result of this expression:
+
+`four(three(two(one(10))));`
+
+is equal to:
+
+`executeInOrder(one, two, three, four)(10);`
+
+In this case value 10 is provided as an argument to the function one,
+
+The result of function one is provided to function two....
+
 If you prefer to provide arguments in reverse order you can use `.reduceRight()` method.
 
 The main advantage of that method is readability of the code.
@@ -221,7 +237,9 @@ Loader.reloadData('users');
 ## **Custom Super Event Listener:**
 
 This eventListener listen multiple events on one element.
+
 It base on the same syntax as regular `addEventListener()`
+
 `element.addListener(events array, callback[, configuration object*])`
 
 ```javascript
@@ -270,6 +288,7 @@ function objectDeepCopy(oldObj = {}, newObj) {
 
 ```
 Unfortunately there is no way to copy `getter` and `setter` from an object,
+
 but that is the only limitation.
 
 <hr>
@@ -277,7 +296,7 @@ but that is the only limitation.
 
 ## **Get search query [key, value] pairs.<br>Generate search quey string from specific localStorage values**
 
-Query string is convenient way to set some site properties.
+Query string is convenient way to set some site properties or share site settings to other ppl.
 
 ```javascript
 const SearchQuery = (settingsPrefix => {
@@ -308,7 +327,9 @@ const SearchQuery = (settingsPrefix => {
 ```
 
 If you set prefix `"main."` before every localStorage key you want to include to search query
+
 function `SearchQuery.getUrl()` return full link to the site with all values from localStorage.
+
 `SearchQuery.getParameter(<name> [, location]);` returns value of that property
 
 
@@ -317,9 +338,13 @@ function `SearchQuery.getUrl()` return full link to the site with all values fro
 
 ## **Linear proportion with cut values out of range**
 `value` - number to convert,
+
 `iMin` - input range minimum,
+
 `iMax` - input range maximum,
+
 `oMin` - output range minimum,
+
 `oMax` - output range maximum;
 
 ```javascript
@@ -331,8 +356,10 @@ function linear(value, iMin, iMax, oMin, oMax) {
 ```
 ex.
 `linear(4, 0, 10, 0, 100);`   4 is 40% of range 0 to 10 so final value is 40% of range 0 to 100 = 40
+
 `linear(12, 0, 10, 0, 100);`  12 is 120% of range 0 to 10 so final value is 120% of range 0 to 100 = 120 BUT:
-  it clamps the final value to output range maximum = 100
+
+it clamps the final value to output range maximum = 100
 
 <hr>
 <br>
@@ -355,7 +382,9 @@ function convertToTime(hours = '00', minutes = '00', format12 = navigator.hour12
 }
 ```
 In both cases `convertToTime(16, 45)` returns "16:45" or "4:45",
+
 however first method has much better performance.
 
 It begins noticeable on less efficient PCs,
+
 if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
