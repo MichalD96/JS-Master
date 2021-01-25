@@ -420,3 +420,26 @@ so you should never go over `.padding(15, 17);`
 also script can add only '0' on the beginning and on the end, but who needs anything else?
 
 
+<hr>
+<br>
+
+## **The real modulus operator in javaScript:**
+
+In javascript exists only reminder operator, but is easy to write your own modulus operator
+
+```javascript
+Object.defineProperty(Number.prototype, 'mod', {
+  value: function (number) {
+    return ((this % number ) + number ) % number;
+  }
+});
+```
+
+reminder:
+
+`-2 % 7` = -2
+
+modulus:
+
+`(-2).mod(7)` = 5
+
