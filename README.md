@@ -452,6 +452,7 @@ modulus:
 
 `points` - array of objects that must contain "x" and "y" properties.
   - ex. `const positions = [{ "x": 16, "y": 25 }, { "x": 146, "y": 78 }];`
+
 `extendBounds` - amount of units to extend circle radius.
 
 ```javascript
