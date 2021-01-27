@@ -405,7 +405,9 @@ Object.defineProperty(String.prototype, 'padding', {
       prefix = '-';
       number *= -1;
     }
-    const num = prefix + (1e15 + ((x > 0) ? Math.floor(number) : Math.round(number))).toString().slice(-s);
+    const num = prefix + (1e15 + ((x > 0)
+      ? Math.floor(number)
+      : Math.round(number))).toString().slice(-s);
     const dec = (x >= 0) ? (number % 1).toFixed(x).slice(1) : '';
     return `${num}${dec}`;
   },
@@ -456,7 +458,8 @@ modulus:
 function pointsProperties(points, precision = 4) {
   const center = (points => {
     const avg = [[], []];
-    const averageValue = arr => arr.reduce((acc, amount, index, array) => amount / array.length + acc, 0);
+    const averageValue = arr =>
+      arr.reduce((acc, amount, index, array) => amount / array.length + acc, 0);
 
     points.forEach(({ x, y }) => {
       avg[0].push(x);
