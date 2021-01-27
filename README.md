@@ -392,7 +392,7 @@ if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
 <hr>
 <br>
 
-## **Better method of `.padStart()` and `.padEnd()` combined in one method:**
+## **Better `.padStart()` and `.padEnd()` combined in one method:**
 
 `.padStart()` and `.padEnd()` does not support negative numbers, my script has no problem with it
 
@@ -443,3 +443,45 @@ modulus:
 
 `(-2).mod(7)` = 5
 
+<hr>
+<br>
+
+## **Calculate "mass center" and radius of circle around set of points**
+
+`points` - array of objects that must contain "x" and "y" properties.
+  - ex. `const positions = [{ "x": 16, "y": 25 }, { "x": 146, "y": 78 }];`
+`extendBounds` - amount of units to extend circle radius.
+
+```javascript
+function pointsProperties(points, precision = 4) {
+  const center = (points => {
+    const avg = [[], []];
+    const averageValue = arr => arr.reduce((acc, amount, index, array) => amount / array.length + acc, 0);
+
+    points.forEach(({ x, y }) => {
+      avg[0].push(x);
+      avg[1].push(y);
+    });
+
+    return avg.map(averageValue);
+  })(points);
+
+  const maxDist = points.reduce((acc, { x, y }) => {
+    const [a, b] = [center[0] - x, center[1] - y];
+    return Math.max(acc, Math.sqrt(a * a + b * b));
+  }, 0);
+
+  return {
+    radius: (extendBounds = 0) => (maxDist + extendBounds).toFixed(precision),
+    massCenter: () => center,
+  };
+}
+```
+
+How to use:
+
+`const myPoints = pointsProperties(positions);`
+
+`myPoints.massCenter();` - returns center of the circle (center of the circle is in geometrical mass center of the figure made from connecting all points).
+
+`myPoints.radius(2);` - returns the radius of circle containing all points (extended by 2 units).
