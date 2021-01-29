@@ -489,3 +489,41 @@ How to use:
 `myPoints.massCenter();` - returns center of the circle (center of the circle is in geometrical mass center of the figure made from connecting all points).
 
 `myPoints.radius(2);` - returns the radius of circle containing all points (extended by 2 units).
+
+
+<hr>
+<br>
+
+## **Reversed `.splice()`**
+
+`.edges(x, y);`
+
+Returns `x` elements from the beginning of the array and `y` elements from the end of the array.
+```javascript
+Object.defineProperty(Array.prototype, "edges", {
+  value: function (a, b) {
+    if (a < 0 || b < 0 || (a + b >= this.length))
+      return this;
+
+    const left = b ? this.slice(-b) : [];
+    const right = a ? this.reverse().slice(-a).reverse() : [];
+
+    return [...right, ...left];
+  },
+});
+
+
+const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+arr.edges();     // []
+arr.edges(3);    // [0, 1, 2]
+arr.edges(0, 1); // [9]
+arr.edges(0, 3); // [7, 8, 9]
+arr.edges(2, 2); // [0, 1, 8, 9]
+arr.edges(11);   // value bigger than arr.length - returns original array
+
+```
+
+Very useful if we combine it with `.sort()` method, that allows to create array of extreme values.
+
+`someArray.sort((a, b) => a - b).edges(1, 1)` // [minValue, maxValue]
+
