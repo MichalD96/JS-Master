@@ -523,7 +523,16 @@ arr.edges(11);   // value bigger than arr.length - returns original array
 
 ```
 
-Very useful if we combine it with `.sort()` method, that allows to create array of extreme values.
+<hr>
+<br>
 
-`someArray.sort((a, b) => a - b).edges(1, 1)` // [minValue, maxValue]
+## **Find extreme values of the array without sorting`**
 
+```javascript
+Object.defineProperty(Array.prototype, "minMax", {
+  value: function () {
+    return [Math.min(...this), Math.max(...this)];
+  },
+});
+```
+returns array with minimum and maximum value
