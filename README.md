@@ -526,7 +526,7 @@ arr.edges(11);   // value bigger than arr.length - returns original array
 <hr>
 <br>
 
-## **Find extreme values of the array without sorting`**
+## **Find extreme values of the array without sorting**
 
 ```javascript
 Object.defineProperty(Array.prototype, "minMax", {
