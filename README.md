@@ -375,7 +375,7 @@ function convertToTime(hours = '00', minutes = '00', format12 = navigator.hour12
 }
 
 function convertToTime(hours = '00', minutes = '00', format12 = navigator.hour12) {
-  return new Date('1970-01-01T' + `${hours}:${minutes.toString().padStart(2, '0')}:00` + '.000Z')
+  return new Date(`1970-01-01T${hours}:${minutes.toString().padStart(2, '0')}:00.000Z`)
     .toLocaleTimeString({},
       { timeZone: 'UTC', hour12: format12 , hour: 'numeric', minute: 'numeric' }
     );
