@@ -24,14 +24,14 @@ function averageArray(...args) {
 
   return args[lArray]
     // map values of each array on the longest array
-    .map((value, index) => {
-      return args
+    .map((value, index) =>
+      args
         // if array element is undefined assign 0 else assign element with given index
         .map(array => array[index] || 0)
         // reduce array of all same index elements from all arrays to one number
         .reduce((acc, val) => acc + val);
-    })
-    // lArray is array of sum of all elements, divide every element by amount of arguments to get average value
+    )
+    // divide every element by amount of arguments to get average value
     .map(element => element / args.length);
 }
 
@@ -280,7 +280,9 @@ function objectDeepCopy(oldObj = {}, newObj) {
   newObj = newObj || new oldObj.constructor();
 
   for (const name in oldObj) {
-    newObj[name] = typeof newObj[name] === 'undefined' ? objectDeepCopy(oldObj[name], null) : newObj[name];
+    newObj[name] = typeof newObj[name] === 'undefined'
+      ? objectDeepCopy(oldObj[name], null)
+      : newObj[name];
   }
 
   return newObj;
@@ -536,3 +538,30 @@ Object.defineProperty(Array.prototype, "minMax", {
 });
 ```
 returns array with minimum and maximum value
+
+<hr>
+<br>
+
+## **Replace object keys**
+
+```javascript
+function replaceObjectKeys(sourceObject, newKeysObject) {
+  return Object.keys(sourceObject).reduce((acc, value) => {
+    return { ...acc, ...{ [newKeysObject[value] || value]: sourceObject[value] } };
+  }, {});
+};
+
+const sourceObject = {
+  name: 'Michal',
+  age: 25,
+}
+
+const newKeysObject = {
+  name: 'nick',
+  age: 'lvl'
+};
+
+replaceObjectKeys(sourceObject, newKeysObject) // returns { nick: 'Michal', lvl: 25 }
+```
+
+Function returns new object without modifying original object.
