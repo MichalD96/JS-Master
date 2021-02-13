@@ -581,15 +581,15 @@ Function returns new object without modifying original object.
 
 ## **Cubic Bézier curve**
 
-point1 - start point coordinates [x, y] of the curve.
+`point1` - start point coordinates [x, y] of the curve.
 
-tangentP1 - (bezier handler) position of arm curve point connected to point1 [x, y].
+`tangentP1` - (bezier handler) position of arm curve point connected to point1 [x, y].
 
-point2 - end point coordinates [x, y] of the curve.
+`point2` - end point coordinates [x, y] of the curve.
 
-tangentP2 - (bezier handler) position of arm curve point connected to point2 [x, y].
+`tangentP2` - (bezier handler) position of arm curve point connected to point2 [x, y].
 
-complexity - define how many points, function creates between start and end point of the curve. (keep this value as low as possible)
+`complexity` - define how many points, function creates between start and end point of the curve. (keep this value as low as possible)
 
 ```javascript
 function cubicBezierPoints(point1, tangentP1, point2, tangentP2, complexity = 100) {
