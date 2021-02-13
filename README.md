@@ -149,6 +149,14 @@ The main advantage of that method is readability of the code.
 
 `x` is a value provided to .reduce() method as a start value,
 
+### **Similar version for composition of async functions**
+
+```javascript
+const executeInOrderAsync = (...fns) => x => fns.reduce((acc, fn) =>
+  acc.then(fn), Promise.resolve(x));
+```
+
+every function `(...fns)` must be resolved to start executing next async function
 
 <hr>
 <br>
