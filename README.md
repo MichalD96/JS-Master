@@ -253,11 +253,10 @@ It base on the same syntax as regular `addEventListener()`
 ```javascript
 Object.defineProperty(EventTarget.prototype, 'addListener', {
   value: function (eventsArray, callback, config) {
-    const configObject = Object.assign({ capture: false, passive: false, once: false }, config);
     eventsArray.forEach(captureEvent => {
       this.addEventListener(captureEvent, event => {
         callback(event);
-      }, configObject);
+      }, config);
     });
   },
   enumerable: false,
@@ -273,6 +272,8 @@ document.querySelector('button')
   }, { capture: true });
 ```
 
+`config` must be an object same af for regular `.addEventListener()`
+  - ex. `{ capture: true, passive: false, once: false }` - all values are set to false as default.
 <hr>
 <br>
 
@@ -573,3 +574,36 @@ replaceObjectKeys(sourceObject, newKeysObject) // returns { nick: 'Michal', lvl:
 ```
 
 Function returns new object without modifying original object.
+
+
+<hr>
+<br>
+
+## **Cubic Bézier curve**
+
+```javascript
+/**
+  @param {array} point1 - start point coordinates [x, y] of the curve.
+  @param {array} tangentP1 - (bezier handler) position of arm curve point connected to point1 [x, y] instanceof Array).
+  @param {array} point2 - end point coordinates [x, y] of the curve.
+  @param {array} tangentP2 - (bezier handler) position of arm curve point connected to point2 [x, y].
+  @param {number} complexity - define how many points, function creates between start and end point of the curve
+    (keep this value as low as possible)
+**/
+
+function cubicBezierPoints(point1, tangentP1, point2, tangentP2, complexity = 100) {
+  return new Array(complexity)
+    .fill([[], []])
+    .map((element, index) => {
+      const t = index / (complexity - 1);
+      return element.map((e, _index) =>
+        (1 - t) ** 3 * point1[_index] + 3 * (1 - t) ** 2 * t * tangentP1[_index] + 3 * (1 - t) * t ** 2 * tangentP2[_index] + t ** 3 * point2[_index]);
+    });
+}
+```
+
+Function returns array containing arrays of points to create the curve,
+
+returned array length is equal to complexity parameter,
+
+every element of the array is another array containing one point [x, y].
