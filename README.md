@@ -608,3 +608,33 @@ Function returns array containing arrays of points to create the curve,
 returned array length is equal to complexity parameter,
 
 every element of the array is another array containing one point coordinates [x, y].
+
+<hr>
+<br>
+
+## **Simple digits grouping**
+
+```javascript
+function groupDigits(string, separator = '.') {
+  return string.toString().replace(/\B(?=(\d{3})+(?!\d))/gm, separator);
+}
+```
+
+```javascript
+for (const Obj of [Number, String]) {
+  Object.defineProperty(Obj.prototype, 'groupDigits', {
+    value: function (separator = '.') {
+      return this.toString().replace(/\B(?=(\d{3})+(?!\d))/gm, separator);
+    },
+  });
+}
+```
+
+`groupDigits(1234567);`
+
+`(1234567).groupDigits();`
+
+both returns "1.234.567"
+
+For more complex grouping i recommend `.toLocaleString()` method.
+
