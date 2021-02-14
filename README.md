@@ -272,7 +272,7 @@ document.querySelector('button')
   }, { capture: true });
 ```
 
-`config` must be an object same af for regular `.addEventListener()`
+`config` must be an object same as for regular `.addEventListener()`
   - ex. `{ capture: true, passive: false, once: false }` - all values are set to false as default.
 <hr>
 <br>
@@ -607,4 +607,4 @@ Function returns array containing arrays of points to create the curve,
 
 returned array length is equal to complexity parameter,
 
-every element of the array is another array containing one point [x, y].
+every element of the array is another array containing one point coordinates [x, y].
