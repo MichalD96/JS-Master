@@ -29,7 +29,7 @@ function averageArray(...args) {
         // if array element is undefined assign 0 else assign element with given index
         .map(array => array[index] || 0)
         // reduce array of all same index elements from all arrays to one number
-        .reduce((acc, val) => acc + val)
+        .reduce((acc, val) => acc + val, 0)
     )
     // divide every element by amount of arguments to get average value
     .map(element => element / args.length);
