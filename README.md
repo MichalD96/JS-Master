@@ -408,21 +408,18 @@ if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
 `.padStart()` and `.padEnd()` does not support negative numbers, my script has no problem with it
 
 ```javascript
-Object.defineProperty(String.prototype, 'padding', {
-  value: function (s, x) {
-    let number = +this;
-    let prefix = '';
-    if (number < 0) {
-      prefix = '-';
-      number *= -1;
-    }
-    const num = prefix + (1e15 + ((x > 0)
-      ? Math.floor(number)
-      : Math.round(number))).toString().slice(-s);
-    const dec = (x >= 0) ? (number % 1).toFixed(x).slice(1) : '';
-    return `${num}${dec}`;
-  },
-});
+for (const Obj of [Number, String]) {
+  Object.defineProperty(Obj.prototype, 'padding', {
+    value: function (s = 15, x = 5) {
+      const number = +this;
+      const num = Math.abs(1e15 + ((x > 0)
+        ? Math.floor(number)
+        : Math.round(number))).toString().slice(-s);
+      const dec = (x >= 0) ? (number % 1).toFixed(x).slice(1) : '';
+      return `${(number < 0) ? '-' : ''}${num}${dec}`;
+    },
+  });
+};
 ```
 `(16.35).padding(4, 7)` = "0016.3500000"
 
