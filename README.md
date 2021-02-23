@@ -642,6 +642,8 @@ It's the best method to pass arguments if function must be executed as a callbac
 
 If parameters can be the same, highly recommend to use default parameters!
 
+Pro tip: In JS functions are "First-class objects", it means you can assign function as a default parameter. Many ppl forget about it. It is good alternative to beneath code:
+
 ```javascript
 Object.defineProperty(Function.prototype, 'assignArguments', {
   value: function (...args) {
