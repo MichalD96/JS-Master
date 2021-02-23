@@ -636,6 +636,9 @@ both returns "1.234.567"
 For more complex grouping i recommend `.toLocaleString()` method.
 
 
+<hr>
+<br>
+
 ## **Passing arguments to callback function**
 
 It's the best method to pass arguments if function must be executed as a callback, and default parameters can't be the same in every case.
