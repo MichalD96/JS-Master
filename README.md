@@ -510,13 +510,13 @@ Returns `x` elements from the beginning of the array and `y` elements from the e
 ```javascript
 Object.defineProperty(Array.prototype, "edges", {
   value: function (a, b) {
-    if (a < 0 || b < 0 || (a + b >= this.length))
+    if (a < 0 || b < 0 || (a + b >= arr.length))
       return this;
 
-    const left = b ? this.slice(-b) : [];
-    const right = a ? this.reverse().slice(-a).reverse() : [];
+    const right = a ? [...this].reverse().slice(-a) : [];
+    const left = b ? [...this].slice(-b).reverse() : [];
 
-    return [...right, ...left];
+    return [...left, ...right].reverse();
   },
 });
 
