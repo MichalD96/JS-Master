@@ -502,7 +502,7 @@ How to use:
 <hr>
 <br>
 
-## **Reversed `.splice()`**
+## **Reversed `.slice()`**
 
 `.edges(x, y);`
 
