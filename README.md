@@ -668,6 +668,10 @@ result = () => addOne(2); // assigns callback to "result" variable
 result(); // returns 3
 ```
 
+<hr>
+<br>
+
+
 ## **Recursive comparing two objects**
 
 `compareObjects(obj1, obj2)`
