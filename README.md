@@ -668,3 +668,32 @@ result = () => addOne(2); // assigns callback to "result" variable
 result(); // returns 3
 ```
 
+## **Recursive comparing two objects**
+
+`compareObjects(obj1, obj2)`
+
+`obj1` is reference object that should contain all properties we are looking for to compare.
+
+```javascript
+function compareObjects(obj1, obj2) {
+  const wrongProperties = [];
+  const recursiveCompare = (obj1, obj2) => {
+    for (const prop in obj1) {
+      if (typeof obj1[prop] === 'object' && obj1[prop] && obj2[prop]) {
+        recursiveCompare(obj1[prop], obj2[prop])
+      }
+      else if (obj1.hasOwnProperty(prop)) {
+        if (obj1[prop] !== obj2[prop])
+          wrongProperties.push(prop);
+      }
+    }
+  };
+  recursiveCompare(obj1, obj2);
+  return wrongProperties;
+}
+```
+
+Function returns array with keys of all not matching properties.
+
+Function can also compare two arrays but it will return indexes instead of object keys.
+
