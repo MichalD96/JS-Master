@@ -115,6 +115,8 @@ If you not provide arguments to getHTML or getLink methods, video will start fro
 
 ## **Nesting multiple functions in order of execution context:**
 
+Inspired by [Overment](https://www.youtube.com/channel/UC_MIaHmSkt9JHNZfQ_gUmrg)
+
 ```javascript
 const executeInOrder = (...fns) => x => fns.reduce((acc, fn) => fn(acc), x);
 ```
