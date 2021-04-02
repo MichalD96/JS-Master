@@ -703,3 +703,40 @@ Function returns array with keys of all not matching properties.
 
 Function can also compare two arrays but it will return indexes instead of object keys.
 
+<hr>
+<br>
+
+## **Extract file name and extension from the path**
+
+Easily get file name and extension from the path/link/API
+
+Sometimes working with file system is necessary to dynamically operate on file names and extensions.
+This simple method allows you to extract everything you need.
+
+```javascript
+Object.defineProperty(String.prototype, 'getFromPath', {
+  value: function (type) {
+    const name = this.split('/').pop().split('.', 1)[0];
+    const extension = this.match(/(?:\.([^.]+))?$/)[1];
+    const fullPath = this.replace(/\\/g, '/');
+    if (!type) return fullPath;
+
+    return {
+      name,
+      extension,
+      fullPath,
+    }[type];
+  }
+});
+```
+
+const path = 'assets/javaScript/getNameProperty.min.js';
+
+path.getFromPath(); // returns full path and converts backslashes to slashes
+
+path.getFromPath('name'); // returns 'getNameProperty'
+
+path.getFromPath('extension'); // returns 'js'
+
+path.getFromPath('fullPath'); // returns full path and converts backslashes to slashes
+
