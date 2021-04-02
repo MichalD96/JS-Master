@@ -730,13 +730,18 @@ Object.defineProperty(String.prototype, 'getFromPath', {
 });
 ```
 
-const path = 'assets/javaScript/getNameProperty.min.js';
+```javascript
+const path = './assets/javaScript/getNameProperty.min.js';
 
-path.getFromPath(); // returns full path and converts backslashes to slashes
+// returns full path and converts backslashes to slashes
+path.getFromPath();
 
-path.getFromPath('name'); // returns 'getNameProperty'
+// returns 'getNameProperty'
+path.getFromPath('name');
 
-path.getFromPath('extension'); // returns 'js'
+// returns 'js'
+path.getFromPath('extension');
 
-path.getFromPath('fullPath'); // returns full path and converts backslashes to slashes
-
+// returns full path and converts backslashes to slashes
+path.getFromPath('fullPath');
+```
