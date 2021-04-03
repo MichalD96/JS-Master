@@ -749,7 +749,7 @@ path.getFromPath('fullPath');
 <hr>
 <br>
 
-## **Find index or snap to the most similar element, to given value in array of digits**
+## **Find index or snap to the most similar element in array of digits, to given value**
 
 Method looking for the smallest difference between value passed as argument and every element of the array.
 
