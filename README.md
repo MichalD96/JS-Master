@@ -745,3 +745,29 @@ path.getFromPath('extension');
 // returns full path and converts backslashes to slashes
 path.getFromPath('fullPath');
 ```
+
+<hr>
+<br>
+
+## **Find index of the most similar element in array to given value (only digits array)**
+
+Method looking for the smallest difference between value passed as argument and every element of the array.
+
+The result is index of element with the smallest difference to provided value.
+
+```javascript
+Object.defineProperty(Array.prototype, 'indexOfClosestValue', {
+  value: function (value) {
+    return this
+      .map(element => Math.abs(value - element))
+      .reduce((acc, diff, index, arr) => diff < arr[acc] ? index : acc, 0);
+  }
+});
+```
+
+Example:
+```javascript
+const array = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+const value = 62.45;
+array.indexOfClosestValue(value); // returns 6 (array[6] = 60)
+```
