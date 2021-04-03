@@ -771,7 +771,7 @@ const array = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
 array.indexOfClosestValue(62.45); // returns 6 (array[6] = 60)
 ```
 
-Also very useful is 'snapping' to the closest matching value in array:
+Also very useful is 'snapping' to the most similar value in array:
 
 ```javascript
 Object.defineProperty(Array.prototype, 'snapToClosestValue', {
