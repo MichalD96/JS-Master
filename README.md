@@ -749,7 +749,7 @@ path.getFromPath('fullPath');
 <hr>
 <br>
 
-## **Find index of the most similar element in array to given value (only digits array)**
+## **Find index or snap to the most similar element, to given value in array of digits**
 
 Method looking for the smallest difference between value passed as argument and every element of the array.
 
@@ -768,8 +768,7 @@ Object.defineProperty(Array.prototype, 'indexOfClosestValue', {
 Example:
 ```javascript
 const array = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
-const value = 62.45;
-array.indexOfClosestValue(value); // returns 6 (array[6] = 60)
+array.indexOfClosestValue(62.45); // returns 6 (array[6] = 60)
 ```
 
 Also very useful is 'snapping' to the closest matching value in array:
@@ -788,5 +787,5 @@ Object.defineProperty(Array.prototype, 'snapToClosestValue', {
 
 Example:
 ```javascript
-array.snapToClosestValue(value); // returns 60
+array.snapToClosestValue(62.45); // returns 60
 ```
