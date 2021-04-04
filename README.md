@@ -716,16 +716,11 @@ This simple method allows you to extract everything you need.
 ```javascript
 Object.defineProperty(String.prototype, 'getFromPath', {
   value: function (type) {
-    const name = this.split('/').pop().split('.', 1)[0];
-    const extension = this.match(/(?:\.([^.]+))?$/)[1];
-    const fullPath = this.replace(/\\/g, '/');
-    if (!type) return fullPath;
-
     return {
-      name,
-      extension,
-      fullPath,
-    }[type];
+      name: this.split('/').pop().split('.', 1)[0],
+      extension: this.match(/(?:\.([^.]+))?$/)[1],
+      fullPath: this.replace(/\\/g, '/'),
+    }[type || fullPath];
   }
 });
 ```
@@ -741,6 +736,7 @@ path.getFromPath('extension');
 
 // returns full path and converts backslashes to slashes
 path.getFromPath('fullPath');
+path.getFromPath();
 ```
 
 <hr>
