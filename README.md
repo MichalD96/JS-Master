@@ -716,11 +716,12 @@ This simple method allows you to extract everything you need.
 ```javascript
 Object.defineProperty(String.prototype, 'getFromPath', {
   value: function (type) {
-    return {
+    const props = {
       name: this.split('/').pop().split('.', 1)[0],
       extension: this.match(/(?:\.([^.]+))?$/)[1],
       fullPath: this.replace(/\\/g, '/'),
-    }[type || fullPath];
+    };
+    return props[type in props ? type : 'fullPath'];
   }
 });
 ```
