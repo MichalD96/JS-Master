@@ -512,7 +512,7 @@ Returns `x` elements from the beginning of the array and `y` elements from the e
 ```javascript
 Object.defineProperty(Array.prototype, "edges", {
   value: function (a, b) {
-    if (a < 0 || b < 0 || (a + b >= arr.length))
+    if (a < 0 || b < 0 || (a + b >= this.length))
       return this;
 
     const right = a ? [...this].reverse().slice(-a) : [];
@@ -720,6 +720,7 @@ Object.defineProperty(String.prototype, 'getFromPath', {
       name: this.split('/').pop().split('.', 1)[0],
       extension: this.match(/(?:\.([^.]+))?$/)[1],
       fullPath: this.replace(/\\/g, '/'),
+      foldersPath: this.replace(/\\/g, '/').substring(0, this.lastIndexOf('/')),
     };
     return props[type in props ? type : 'fullPath'];
   }
