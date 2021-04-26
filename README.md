@@ -751,11 +751,22 @@ Method looking for the smallest difference between value passed as argument and 
 The result is index of element with the smallest difference to provided value.
 
 ```javascript
-Object.defineProperty(Array.prototype, 'indexOfClosestValue', {
-  value: function (value) {
-    return this
-      .map(element => Math.abs(value - element))
-      .reduce((acc, diff, index, arr) => diff < arr[acc] ? index : acc, 0);
+Object.defineProperties(Array.prototype, {
+  'indexOfClosestValue': {
+    value: function (value) {
+      return this
+        .map(element => Math.abs(value - element))
+        .reduce((acc, diff, index, arr) => diff < arr[acc] ? index : acc, 0);
+    }
+  },
+  'snapToClosestValue': {
+    value: function (value) {
+      const index = this
+        .map(element => Math.abs(value - element))
+        .reduce((acc, diff, index, arr) => diff < arr[acc] ? index : acc, 0);
+
+      return this[index];
+    }
   }
 });
 ```
@@ -763,24 +774,8 @@ Object.defineProperty(Array.prototype, 'indexOfClosestValue', {
 Example:
 ```javascript
 const array = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+
 array.indexOfClosestValue(62.45); // returns 6 (array[6] = 60)
-```
 
-Also very useful is 'snapping' to the most similar value in array:
-
-```javascript
-Object.defineProperty(Array.prototype, 'snapToClosestValue', {
-  value: function (value) {
-    const index = this
-      .map(element => Math.abs(value - element))
-      .reduce((acc, diff, index, arr) => diff < arr[acc] ? index : acc, 0);
-
-    return this[index];
-  }
-});
-```
-
-Example:
-```javascript
 array.snapToClosestValue(62.45); // returns 60
 ```
