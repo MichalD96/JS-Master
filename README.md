@@ -773,9 +773,13 @@ Object.defineProperties(Array.prototype, {
 
 Example:
 ```javascript
-const array = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+const array = [-20, Math.PI, 20.1235, Math.log(17), 73, 50, 60, 4, -82, Math.sqrt(2)];
 
 array.indexOfClosestValue(62.45); // returns 6 (array[6] = 60)
+array.indexOfClosestValue(3.14); // returns 1 (Math.PI = 3.1415926)
 
 array.snapToClosestValue(62.45); // returns 60
+array.snapToClosestValue(2.8); // returns Math.log(17) = 2.833213344056216
 ```
+
+It is not approximated value by any rounding, script counts absolute smallest difference between given value and array elements.
