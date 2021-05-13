@@ -209,7 +209,11 @@ class Loader {
     this.fetchProperties = Object.assign(this.fetchProperties, obj);
   }
   static getName(url) {
-    return url.split('/').pop().split('.', 1)[0];
+    return url
+      .split('/')
+      .filter(e => e)
+      .pop()
+      .split('.', 1)[0];
   }
 }
 
