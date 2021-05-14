@@ -168,23 +168,20 @@ every function `(...fns)` must be resolved to start executing next async functio
 Execute fetch of all website data, store it until the rest of the code will be loaded and ready to use it
 ```javascript
 class Loader {
-  static promises = {};
-  static urls = new Set();
+  static promises = Object.create(null);
+  static urls = new Map();
   static fetchProperties = { method: 'GET', cache: 'no-cache' };
 
   static fetchData(urls) {
     urls.forEach(url => {
-      this.urls.add(url);
-      const fileName = this.getName(url);
-
-      if (!this.promises[fileName])
-        this.promises[fileName] = new Loader(url);
-      else
-        throw new Error(`"${fileName}" already registered!`);
+      const fileName = url.split('/').filter(e => e).pop().split('.', 1)[0];
+      this.promises[fileName] = new Loader(url);
+      this.urls.set(filename, url);
     });
 
     this.contentLoaded = new Promise(resolve => this.resolveContentLoaded = resolve);
   }
+
   constructor(url, noCache = null) {
     this._json = (async () => {
       try {
@@ -195,25 +192,20 @@ class Loader {
       }
     })();
   }
+
   execute(...args) {
     const json = this._json;
     delete this._json;
     return json.then(...args);
   }
+
   static reloadData(name) {
     delete this.promises[name];
-    const url = this.urls.find(url => this.getName(url) === name);
-    this.promises[name] = new Loader(url, { cache: 'no-cache' });
+    this.promises[name] = new Loader(this.urls.get(name), { cache: Date.now() });
   }
+
   static set fetchOptions(obj) {
     this.fetchProperties = Object.assign(this.fetchProperties, obj);
-  }
-  static getName(url) {
-    return url
-      .split('/')
-      .filter(e => e)
-      .pop()
-      .split('.', 1)[0];
   }
 }
 
