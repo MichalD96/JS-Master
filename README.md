@@ -713,7 +713,7 @@ This simple method allows you to extract everything you need.
 Object.defineProperty(String.prototype, 'getFromPath', {
   value: function (type) {
     const props = {
-      name: this.split('/').pop().split('.', 1)[0],
+      name: this.split('/').filter(e => e).pop().split('.', 1)[0],
       extension: this.match(/(?:\.([^.]+))?$/)[1],
       fullPath: this.replace(/\\/g, '/'),
       foldersPath: this.replace(/\\/g, '/').substring(0, this.lastIndexOf('/')),
