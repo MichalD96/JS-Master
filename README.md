@@ -438,7 +438,7 @@ In javascript exists only reminder operator, but is easy to write your own modul
 ```javascript
 Object.defineProperty(Number.prototype, 'mod', {
   value: function (number) {
-    return ((this % number ) + number ) % number;
+    return ((this % number) + number) % number;
   }
 });
 ```
