@@ -717,7 +717,7 @@ Object.defineProperty(String.prototype, 'getFromPath', {
       name: path.split('/').filter(e => e).pop().split('.', 1)[0],
       extension: path.match(/(?:\.([^.]+))?$/)[1],
       fullPath: path,
-      foldersPath: path.replace(/\\/g, '/').substring(0, path.lastIndexOf('/')),
+      foldersPath: path.substring(0, path.lastIndexOf('/')),
     };
     return props[type in props ? type : 'fullPath'];
   }
@@ -732,6 +732,9 @@ path.getFromPath('name');
 
 // returns 'js'
 path.getFromPath('extension');
+
+// returns './assets/javaScript'
+path.getFromPath('foldersPath');
 
 // returns full path and converts backslashes to slashes
 path.getFromPath('fullPath');
