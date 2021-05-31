@@ -819,7 +819,8 @@ getAllFilesAsync({
 })
   .then((files) => {
     files.forEach((file) => console.log(file));
-  });
+  })
+  .catch(console.log);
 ```
 
 `file` is an object containing file name with extension and absolute file path
