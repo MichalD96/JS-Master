@@ -787,7 +787,7 @@ It is not approximated value by any rounding, script counts absolute smallest di
 <hr>
 <br>
 
-## **Recursively asynchronously look for all files in the directory and optionally filter them by extension**
+## **Recursively asynchronously look for all files in the directory and optionally filter them by extension (Node.js)**
 
 Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension
 
