@@ -783,3 +783,43 @@ array.snapToClosestValue(2.8); // returns Math.log(17) = 2.833213344056216
 ```
 
 It is not approximated value by any rounding, script counts absolute smallest difference between given value and array elements.
+
+<hr>
+<br>
+
+## **Recursively asynchronously look for all files in the directory and optionally filter them by extension**
+
+Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension
+
+```javascript
+function getAllFilesAsync({ directory: path, extension: fileType }) {
+  return (async function getFiles(path) {
+    const entries = await fs.readdir(path, { withFileTypes: true });
+    const files = entries
+      .filter((file) => !file.isDirectory())
+      .map((file) => ({ ...file, path: path + file.name }));
+    const folders = entries.filter((folder) => folder.isDirectory());
+    for (const folder of folders) {
+      files.push(...await getFiles(`${path}${folder.name}/`));
+    }
+    if (fileType) {
+      return files.filter(({ name }) => name.endsWith(fileType));
+    }
+    return files;
+  })(path);
+};
+```
+
+How to use:
+
+```javascript
+getAllFilesAsync({
+  directory: 'E:/Repositories/javaScript/',
+  extension: '.js',
+})
+  .then((files) => {
+    files.forEach((file) => console.log(file));
+  });
+```
+
+`file` is an object containing file name with extension and absolute file path
