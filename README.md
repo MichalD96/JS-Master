@@ -792,7 +792,7 @@ It is not approximated value by any rounding, script counts absolute smallest di
 Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension
 
 ```javascript
-function getAllFilesAsync({ directory: path, extension: fileType }) {
+function getAllFilesAsync({ directory: path, extensions: fileType }) {
   return (async function getFiles(path) {
     const entries = await fs.readdir(path, { withFileTypes: true });
     const files = entries
@@ -803,7 +803,9 @@ function getAllFilesAsync({ directory: path, extension: fileType }) {
       files.push(...await getFiles(`${path}${folder.name}/`));
     }
     if (fileType) {
-      return files.filter(({ name }) => name.endsWith(fileType));
+      return files.filter(({ name }) => {
+        return fileType.some(extension => name.endsWith(extension));
+      });
     }
     return files;
   })(path);
@@ -815,7 +817,7 @@ How to use:
 ```javascript
 getAllFilesAsync({
   directory: 'E:/Repositories/javaScript/',
-  extension: '.js',
+  extensions: ['.js', '.jsx'],
 })
   .then((files) => {
     files.forEach((file) => console.log(file));
