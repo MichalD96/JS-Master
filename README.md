@@ -797,15 +797,15 @@ function getAllFilesAsync({ directory: path, extensions: fileType }) {
     const entries = await fs.readdir(path, { withFileTypes: true });
     const files = entries
       .filter((file) => !file.isDirectory())
-      .map((file) => ({ ...file, path: path + file.name }));
+      .map((file) => ({ ...file, path: `${path}${file.name}` }));
     const folders = entries.filter((folder) => folder.isDirectory());
     for (const folder of folders) {
       files.push(...await getFiles(`${path}${folder.name}/`));
     }
     if (fileType) {
-      return files.filter(({ name }) => {
-        return fileType.some(extension => name.endsWith(extension));
-      });
+      return files.filter(({ name }) =>
+        fileType.some(extension => name.endsWith(extension));
+      );
     }
     return files;
   })(path);
