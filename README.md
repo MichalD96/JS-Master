@@ -478,7 +478,7 @@ function pointsProperties(points, precision = 4) {
 
   const maxDist = points.reduce((acc, { x, y }) => {
     const [a, b] = [center[0] - x, center[1] - y];
-    return Math.max(acc, Math.sqrt(a * a + b * b));
+    return Math.max(acc, Math.hypot(a, b));
   }, 0);
 
   return {
