@@ -463,17 +463,18 @@ modulus:
 
 ```javascript
 function pointsProperties(points, precision = 4) {
+  if (!points.length) return;
+
   const center = (points => {
-    const avg = [[], []];
-    const averageValue = arr =>
-      arr.reduce((acc, amount, index, array) => amount / array.length + acc, 0);
-
-    points.forEach(({ x, y }) => {
-      avg[0].push(x);
-      avg[1].push(y);
-    });
-
-    return avg.map(averageValue);
+    return points
+      .reduce(([oX, oY], { x, y }) =>
+        [[...oX, x], [...oY, y]], [[], []]
+      )
+      .map(arr =>
+        arr.reduce((acc, amount, index, array) =>
+          amount / array.length + acc, 0
+        )
+      );
   })(points);
 
   const maxDist = points.reduce((acc, { x, y }) => {
