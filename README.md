@@ -805,7 +805,7 @@ function getAllFilesAsync({ directory: path, extensions: fileType }) {
     }
     if (fileType) {
       return files.filter(({ name }) =>
-        fileType.some(extension => name.endsWith(extension));
+        fileType.some((extension) => name.endsWith(extension));
       );
     }
     return files;
