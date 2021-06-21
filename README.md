@@ -680,7 +680,7 @@ result(); // returns 3
 ```javascript
 function compareObjects(obj1, obj2) {
   const wrongProperties = [];
-  const recursiveCompare = (obj1, obj2) => {
+  (function recursiveCompare(obj1, obj2) {
     for (const prop in obj1) {
       if (typeof obj1[prop] === 'object' && obj1[prop] && obj2[prop]) {
         recursiveCompare(obj1[prop], obj2[prop])
@@ -690,8 +690,7 @@ function compareObjects(obj1, obj2) {
           wrongProperties.push(prop);
       }
     }
-  };
-  recursiveCompare(obj1, obj2);
+  })(obj1, obj2);
   return wrongProperties;
 }
 ```
