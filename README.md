@@ -834,7 +834,7 @@ getAllFilesAsync({
 
 `UTCtimeString` - time in format 'hours:minutes:seconds' (in UTC/GMT timezone)
 
-`callback` - function to execute when
+`callback` - function to execute
 
 `args` - arguments you pass to the callback function
 
