@@ -826,3 +826,38 @@ getAllFilesAsync({
 ```
 
 `file` is an object containing file name with extension and absolute file path
+
+<hr>
+<br>
+
+## **Trigger function at specific time**
+
+`UTCtimeString` - time in format 'hours:minutes:seconds' (in UTC/GMT timezone)
+
+`callback` - function to execute when
+
+`args` - arguments you pass to the callback function
+
+```javascript
+function triggerAt(UTCtimeString, callback, ...args) {
+  const [hours = 0, minutes = 0, seconds = 0] = UTCtimeString.split(':').map(Number);
+
+  setTimeout(callback, (() => {
+    const now = new Date();
+    let ms = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      hours,
+      minutes,
+      seconds,
+    )).valueOf() - now.valueOf();
+    if (ms < 0) ms += 86400000;
+    return ms;
+  })(), ...args);
+}
+```
+
+```javascript
+triggerAt('15:26:00' console.log, "it's 15:26 Universal coordinated time");
+```
