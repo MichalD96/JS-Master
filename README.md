@@ -401,7 +401,7 @@ if you need to create over 1k clocks on the site (yes, it happens sometimes xD)
 <hr>
 <br>
 
-## **Better `.padStart()` and `.padEnd()` combined in one method:**
+## **Old padding - `.padStart()` and `.padEnd()` combined in one method:**
 
 `.padStart()` and `.padEnd()` does not support negative numbers, my script has no problem with it
 
@@ -573,11 +573,11 @@ Function returns new object without modifying original object.
 
 `point1` - start point coordinates [x, y] of the curve.
 
-`tangentP1` - (bezier handler) position of arm curve point connected to `point1` [x, y].
+`tangentP1` - bezier handler connected to `point1` [x, y].
 
 `point2` - end point coordinates [x, y] of the curve.
 
-`tangentP2` - (bezier handler) position of arm curve point connected to `point2` [x, y].
+`tangentP2` - bezier handler connected to `point2` [x, y].
 
 `complexity` - define how many points, function creates between start and end point of the curve. (keep this value as low as possible)
 
@@ -783,7 +783,10 @@ It is not approximated value by any rounding, script counts absolute smallest di
 
 ## **Recursively asynchronously look for all files in the directory and optionally filter them by extension (Node.js)**
 
-Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension
+Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension.
+
+Required npm modules: fs, path
+
 
 ```javascript
 function getAllFilesAsync({ directory: path, extensions: fileType }) {
@@ -810,7 +813,7 @@ How to use:
 
 ```javascript
 getAllFilesAsync({
-  directory: 'E:/Repositories/javaScript/',
+  directory: path.join(__dirname, 'javaScript/'),
   extensions: ['.js', '.jsx'],
 })
   .then((files) => {
