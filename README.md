@@ -467,14 +467,8 @@ function pointsProperties(points, precision = 4) {
 
   const center = (points => {
     return points
-      .reduce(([oX, oY], { x, y }) =>
-        [[...oX, x], [...oY, y]], [[], []]
-      )
-      .map(arr =>
-        arr.reduce((acc, amount, index, array) =>
-          amount / array.length + acc, 0
-        )
-      );
+      .reduce(([oX, oY], { x, y }) => [[...oX, x], [...oY, y]], [[], []])
+      .map(arr => arr.reduce((acc, amount) => acc + amount, 0) / points.length);
   })(points);
 
   const maxDist = points.reduce((acc, { x, y }) => {
