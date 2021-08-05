@@ -785,7 +785,7 @@ It is not approximated value by any rounding, script counts absolute smallest di
 
 Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension.
 
-Required npm modules: fs, path
+Required modules: fs, path
 
 
 ```javascript
