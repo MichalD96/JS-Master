@@ -168,9 +168,9 @@ every function `(...fns)` must be resolved to start executing next async functio
 Execute fetch of all website data, store it until the rest of the code will be loaded and ready to use it
 ```javascript
 class Loader {
-  static promises = Object.create(null);
-  static urls = new Map();
-  static fetchProperties = { method: 'GET', cache: 'no-cache' };
+  promises = Object.create(null);
+  urls = new Map();
+  fetchProperties = { method: 'GET', cache: 'no-cache' };
 
   static fetchData(urls) {
     urls.forEach(url => {
