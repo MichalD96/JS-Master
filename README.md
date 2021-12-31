@@ -826,7 +826,7 @@ getAllFilesAsync({
   directory: path.join(__dirname, 'javaScript/'),
   extensions: ['.js', '.mjs'],
   excludedFolders: ['test_files'],
-  customFilter: ({ path, name, ext }) => /[A-Z]{1}[_\w]+/.test(name) && ext !== '.jsx';
+  customFilter: ({ path, name, ext }) => /$[A-Z]{1}[0-9_\w]+\.[a-z]{1,3}$/.test(name);
 })
   .then((files) => {
     files.forEach((file) => console.log(file));
@@ -835,7 +835,7 @@ getAllFilesAsync({
 ```
 
 `file` is an object containing file name (with extension), absolute file path and file extension.
-`customFilter` callback allows you for advanced file filtering
+`customFilter` callback allows you for advanced files filtering
 
 <hr>
 <br>
