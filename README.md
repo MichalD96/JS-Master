@@ -781,31 +781,41 @@ It is not approximated value by any rounding, script counts absolute smallest di
 <hr>
 <br>
 
-## **Recursively asynchronously look for all files in the directory and optionally filter them by extension (Node.js)**
+## **Recursively asynchronously look for all files in the directory and optionally filter them by custom callback or extensions array (Node.js)**
 
-Function as an argument requires object that contains "directory" property (path must be absolute) and optional "extension" property that allows filter the array of files to specified extension.
-
-Required modules: fs, path
-
+Required npm modules: fs, path
 
 ```javascript
-function getAllFilesAsync({ directory: path, extensions: fileType }) {
-  return (async function getFiles(path) {
-    const entries = await fs.readdir(path, { withFileTypes: true });
+/**
+@param { String } directory - ABSOLUTE path of the directory (always must ends with slash!)
+@param { Array } extensions - (optional) extensions of the files you looking for (left undefined to get all types of files)
+@param { Array } excludedFolders - (optional) folders names that will be excluded form searching
+@param { Function } customFilter - (optional) callback to filter files (name - file name, path - absolute file path, ext - file extension)
+@returns { Object Promise => Array }
+**/
+
+function getAllFilesAsync({
+  directory,
+  extensions = [],
+  excludedFolders = [],
+  customFilter = () => true,
+}) {
+  return (async function getFiles(directory) {
+    const entries = await fs.readdir(directory, { withFileTypes: true });
     const files = entries
       .filter((file) => !file.isDirectory())
-      .map((file) => ({ ...file, path: `${path}${file.name}` }));
-    const folders = entries.filter((folder) => folder.isDirectory());
+      .map((file) => ({ ...file, path: `${directory}${file.name}`, ext: path.extname(file.name) }));
+
+    const folders = entries.filter((folder) => folder.isDirectory() && !excludedFolders.includes(folder.name));
+
     for (const folder of folders) {
-      files.push(...await getFiles(`${path}${folder.name}/`));
+      files.push(...await getFiles(`${directory}${folder.name}/`));
     }
-    if (fileType) {
-      return files.filter(({ name }) =>
-        fileType.some((extension) => name.endsWith(extension))
-      );
-    }
-    return files;
-  })(path);
+
+    return files
+      .filter(({ ext }) => extensions.length ? extensions.some(extension => ext.endsWith(extension)) : true)
+      .filter(customFilter);
+  })(directory);
 };
 ```
 
@@ -814,15 +824,18 @@ How to use:
 ```javascript
 getAllFilesAsync({
   directory: path.join(__dirname, 'javaScript/'),
-  extensions: ['.js', '.jsx'],
+  extensions: ['.js', '.mjs'],
+  excludedFolders: ['test_files'],
+  customFilter: ({ path, name, ext }) => /[A-Z]{1}[_\w]+/.test(name) && ext !== '.jsx';
 })
   .then((files) => {
     files.forEach((file) => console.log(file));
   })
-  .catch(console.log);
+  .catch(console.error);
 ```
 
-`file` is an object containing file name with extension and absolute file path
+`file` is an object containing file name (with extension), absolute file path and file extension.
+`customFilter` callback allows you for advanced file filtering
 
 <hr>
 <br>
@@ -841,7 +854,7 @@ function triggerAt(UTCtimeString, callback, ...args) {
 
   setTimeout(callback, (() => {
     const now = new Date();
-    let ms = new Date(Date.UTC(
+    const ms = new Date(Date.UTC(
       now.getUTCFullYear(),
       now.getUTCMonth(),
       now.getUTCDate(),
@@ -849,8 +862,8 @@ function triggerAt(UTCtimeString, callback, ...args) {
       minutes,
       seconds,
     )).valueOf() - now.valueOf();
-    if (ms < 0) ms += 86400000;
-    return ms;
+
+    return ms > 0 ? ms : ms + 864e5;
   })(), ...args);
 }
 ```
