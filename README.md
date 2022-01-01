@@ -826,7 +826,7 @@ getAllFilesAsync({
   directory: path.join(__dirname, 'javaScript/'),
   extensions: ['.js', '.mjs'],
   excludedFolders: ['test_files'],
-  customFilter: ({ path, name, ext }) => /$[A-Z]{1}[0-9_\w]+\.[a-z]{1,3}$/.test(name);
+  customFilter: ({ path, name, ext }) => /^[A-Z]{1}[0-9_\w]+\.[a-z]{2,3}$/.test(name);
 })
   .then((files) => {
     files.forEach((file) => console.log(file));
