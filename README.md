@@ -871,3 +871,28 @@ function triggerAt(UTCtimeString, callback, ...args) {
 ```javascript
 triggerAt('15:26:00' console.log, "it's 15:26 Universal coordinated time");
 ```
+
+<hr>
+<br>
+
+## **Divide array in two arrays matching, and not matching given filter**
+
+```javascript
+Object.defineProperty(Array.prototype, 'partition', {
+  value: function(callback) {
+    return this.reduce((acc, value, index, array) => {
+      if (!!callback(value, index, array))
+        return [acc[0].concat(value), acc[1]];
+
+      return [acc[0], acc[1].concat(value)];
+    }, [[], []]);
+  },
+});
+
+const [matching, notMatching] = [1, 45, 100, 17, 60, 12, 51].partition((value) => value < 50);
+
+matching      // value: [1, 45, 17, 12]
+notMatching   // value: [100, 60, 51]
+```
+
+`callback` - function to filter the array, must return true/false, otherwise its result will be converted to boolean value.
