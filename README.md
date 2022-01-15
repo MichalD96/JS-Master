@@ -877,6 +877,8 @@ triggerAt('15:26:00' console.log, "it's 15:26 Universal coordinated time");
 
 ## **Divide array in two arrays matching, and not matching given filter**
 
+`.partition()` method works very similar to `.filter()` method.
+
 ```javascript
 Object.defineProperty(Array.prototype, 'partition', {
   value: function(callback) {
@@ -898,4 +900,5 @@ matching      // value: [1, 45, 17, 12]
 notMatching   // value: [100, 60, 51]
 ```
 
-`callback` - function to filter the array, must return true/false, otherwise its result will be converted to boolean value.
+`callback(current value[, index[, array]])` - function to filter the array, must return true/false, otherwise its result will be converted to boolean value.
+
