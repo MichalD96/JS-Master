@@ -888,7 +888,10 @@ Object.defineProperty(Array.prototype, 'partition', {
     }, [[], []]);
   },
 });
+```
 
+How to use:
+```javascript
 const [matching, notMatching] = [1, 45, 100, 17, 60, 12, 51].partition((value) => value < 50);
 
 matching      // value: [1, 45, 17, 12]
