@@ -748,7 +748,7 @@ It is not approximated value by any rounding, script counts absolute smallest di
 <hr>
 <br>
 
-## **Recursively asynchronously look for all files in the directory and optionally filter them by custom callback or extensions array (Node.js)**
+## **Recursively asynchronously look for all files in the directory and optionally filter them in callback function or extensions array (Node.js)**
 
 Required npm modules: fs-extra, path
 
