@@ -18,24 +18,21 @@ const arrays = {
 }
 
 function averageArray(...args) {
-  // find the longest array
-  const lArray = args.reduce((acc, value, index, array) =>
-    array[acc].length < value.length ? index : acc, 0);
+  const longestArray = args.reduce((acc, array) =>
+    array.length > acc ? array.length : acc, 0
+  );
 
-  return args[lArray]
-    // map values of each array on the longest array
+  return new Array(longestArray)
+    .fill()
     .map((value, index) =>
       args
-        // if array element is undefined assign 0 else assign element with given index
         .map(array => array[index] || 0)
-        // reduce array of all same index elements from all arrays to one number
         .reduce((acc, val) => acc + val, 0)
     )
-    // divide every element by amount of arguments to get average value
     .map(element => element / args.length);
 }
 
-averageArray(...Object.values(arrays)); // function returns: [37, 74, 111, 148, 185, 222, 300];
+averageArray(...Object.values(arrays)); // returns: [37, 74, 111, 148, 185, 222, 300];
 ```
 
 <hr>
