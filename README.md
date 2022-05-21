@@ -11,12 +11,6 @@ You can use/modify this code if (read [license](https://github.com/MichalD96/JS-
 This script allows you to calculate average value of all first, second, third... elements of given arrays.
 
 ```javascript
-const arrays = {
-  a: [1, 2, 3, 4, 5, 6],
-  b: [10, 20, 30, 40, 50, 60],
-  c: [100, 200, 300, 400, 500, 600, 900],
-}
-
 function averageArray(...args) {
   const longestArray = args.reduce((acc, array) =>
     array.length > acc ? array.length : acc, 0
@@ -30,6 +24,16 @@ function averageArray(...args) {
         .reduce((acc, val) => acc + val, 0)
     )
     .map(element => element / args.length);
+}
+```
+
+How to use:
+
+```javascript
+const arrays = {
+  a: [1, 2, 3, 4, 5, 6],
+  b: [10, 20, 30, 40, 50, 60],
+  c: [100, 200, 300, 400, 500, 600, 900],
 }
 
 averageArray(...Object.values(arrays)); // returns: [37, 74, 111, 148, 185, 222, 300];
