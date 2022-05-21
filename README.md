@@ -454,7 +454,7 @@ modulus:
 <hr>
 <br>
 
-## **Calculate "mass center" and radius of circle around set of points**
+## **Calculate centerpoint and radius of circle around set of points / polygon**
 
 `points` - array of objects that must contain "x" and "y" properties.
   - ex. `const positions = [{ "x": 16, "y": 25 }, { "x": 146, "y": 78 }];`
@@ -632,39 +632,6 @@ For more complex grouping i recommend `.toLocaleString()` method.
 <hr>
 <br>
 
-## **Passing arguments to callback function**
-
-It's the best method to pass arguments if function must be executed as a callback, and default parameters can't be the same in every case.
-
-If parameters can be the same, highly recommend to use default parameters!
-
-Pro tip: In JS functions are "First-class objects", it means you can assign function as a default parameter. Many ppl forget about it. It is good alternative to beneath code:
-
-```javascript
-Object.defineProperty(Function.prototype, 'assignArguments', {
-  value: function (...args) {
-    return this.bind(this, ...args);
-  },
-});
-```
-
-example:
-```javascript
-const addOne = number => number + 1;
-
-result = addOne.assignArguments(2); // assigns callback to "result" variable
-result(); // returns 3
-
-// is equal to:
-
-result = () => addOne(2); // assigns callback to "result" variable
-result(); // returns 3
-```
-
-<hr>
-<br>
-
-
 ## **Recursive comparing two objects**
 
 `compareObjects(obj1, obj2)`
@@ -783,7 +750,7 @@ It is not approximated value by any rounding, script counts absolute smallest di
 
 ## **Recursively asynchronously look for all files in the directory and optionally filter them by custom callback or extensions array (Node.js)**
 
-Required npm modules: fs, path
+Required npm modules: fs-extra, path
 
 ```javascript
 /**
