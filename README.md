@@ -772,7 +772,7 @@ function getAllFilesAsync({
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const files = entries
       .filter((file) => !file.isDirectory())
-      .map((file) => ({ ...file, path: `${directory}${file.name}`, ext: path.extname(file.name) }));
+      .map((file) => ({ ...file, path: path.join(directory, file.name), ext: path.extname(file.name) }));
 
     const folders = entries.filter((folder) => folder.isDirectory() && !excludedFolders.includes(folder.name));
 
