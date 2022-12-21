@@ -893,7 +893,11 @@ function transition(valuesArray) {
     return valueStart + (valueEnd - valueStart) * frameCompletion;
   }
 }
-// helper function, described above
+
+```
+
+Helper function (described [here](https://github.com/MichalD96/JS-Master#linear-proportion-with-cut-values-out-of-range)):
+```javascript
 function linear(value, iMin, iMax, oMin, oMax) {
   const clamp = (num, min, max) => num <= min ? min : num >= max ? max : num;
   return clamp((((value - iMin) / (iMax - iMin)) * (oMax - oMin) + oMin), oMin, oMax);
