@@ -877,7 +877,9 @@ notMatching   // value: [100, 60, 51]
 ## **Interpolate smooth transition between number array values**
 
 `transition` function takes array of values to create animation,
+
 `animation` callback function interpolate values between adjacent elements base on passed value of transition completion.
+
 0% transition is always 0 array element and 100% transition is always last array element.
 
 
