@@ -870,3 +870,40 @@ notMatching   // value: [100, 60, 51]
 
 `callback(current value[, index[, array]])` - function to filter the array, must return true/false, otherwise its result will be converted to boolean value.
 
+
+<hr>
+<br>
+
+## **Interpolate smooth transition between number array values**
+
+`transition` function takes array of values to create animation,
+`animation` callback function interpolate values between adjacent elements base on passed value of transition completion.
+0% transition is always 0 array element and 100% transition is always last array element.
+
+
+```javascript
+function transition(valuesArray) {
+  return (animationCompletion) => {
+    const frame = linear(animationCompletion, 0, 1, 0, valuesArray.length - 1);
+    const frameCompletion = frame % 1;
+    const valueStart = valuesArray[Math.floor(frame)];
+    const valueEnd = valuesArray[Math.ceil(frame)];
+    return valueStart + (valueEnd - valueStart) * frameCompletion;
+  }
+}
+// helper function, described above
+function linear(value, iMin, iMax, oMin, oMax) {
+  const clamp = (num, min, max) => num <= min ? min : num >= max ? max : num;
+  return clamp((((value - iMin) / (iMax - iMin)) * (oMax - oMin) + oMin), oMin, oMax);
+}
+```
+
+How to use:
+
+```javascript
+const animation = transition([1, 10, 100, 1000, 10000, 100000]); // animation function as argument accepts value between 0 and 1 which corresponds to the completion state of the transition.
+
+animation(0.5);   // `returns 550`, 50% of the animation is between 100 and 1000 so (100 + 1000) / 2 = 550
+animation(0);     // `returns 1`, 0% of the animation is 0 array element
+animation(0.32);  // `returns 64`, 0.32 is in 60% transition between 10 and 100
+```
