@@ -901,9 +901,12 @@ function linear(value, iMin, iMax, oMin, oMax) {
 How to use:
 
 ```javascript
-const animation = transition([1, 10, 100, 1000, 10000, 100000]); // animation function as argument accepts value between 0 and 1 which corresponds to the completion state of the transition.
+const array = [1, 10, 100, 1000, 10000, 100000];
 
-animation(0.5);   // `returns 550`, 50% of the animation is between 100 and 1000 so (100 + 1000) / 2 = 550
-animation(0);     // `returns 1`, 0% of the animation is 0 array element
-animation(0.32);  // `returns 64`, 0.32 is in 60% transition between 10 and 100
+const animation = transition(array);
+
+// animation function as argument accepts value between 0 and 1 which corresponds to the completion state of the transition.
+animation(0.5);   // returns 550, 50% of the animation is between 100 and 1000 so (100 + 1000) / 2 = 550
+animation(0);     // returns 1, 0% of the animation is 0 array element
+animation(0.32);  // returns 64, 0.32 is in 60% transition between 10 and 100
 ```
