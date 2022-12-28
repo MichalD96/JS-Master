@@ -941,17 +941,20 @@ const getTimeString = ({
   locale = 'en-US',
 }) => {
   const order = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
-  const f = new Intl.RelativeTimeFormat(locale, { style: 'long', localeMatcher: 'lookup', numeric: 'always' });
+  const f = new Intl.RelativeTimeFormat(locale, { style: 'long', numeric: 'always' });
   const difference = timediff(start, end, format);
-  const isPast = Object.values(difference).some(value => value < 0);
   const string = Object.entries(difference)
     .sort((...args) => {
       const [a, b] = args.map(key => order.indexOf(key[0]));
       return a - b;
     })
     .filter(([, time]) => time)
-    .map(([unit, time]) => f.format(time, unit))
-    .map(string => string.split(' ').slice(isPast ? 0 : 1, isPast ? -1 : undefined).join(' '))
+    .map(([unit, time]) => f.formatToParts(time, unit))
+    .map(arr => {
+      const digit = arr.find(({ type }) => type === 'integer').value;
+      const unit = arr.find(({ type, value }) => type === 'literal' && value.startsWith(' ')).value;
+      return `${digit}${unit}`;
+    })
     .join(', ');
 
   return string;
