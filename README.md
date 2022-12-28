@@ -917,11 +917,11 @@ animation(0);     // returns 1, 0% of the animation is 0 array element
 animation(0.32);  // returns 64, 0.32 is in 60% transition between 10 and 100
 ```
 
-
 <hr>
 <br>
 
 ## **Get relative time difference string in any locale**
+
 
 `start` and `end` are set as default to current time
 
@@ -930,7 +930,8 @@ animation(0.32);  // returns 64, 0.32 is in 60% transition between 10 and 100
 `locale` sets string output language
 
 
-Uses npm [timefiff](https://www.npmjs.com/package/timediff) package
+Uses npm [timediff](https://www.npmjs.com/package/timediff) package
+
 
 ```javascript
 import timediff from 'timediff';
