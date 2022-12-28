@@ -954,8 +954,8 @@ const getTimeString = ({
     .map(([unit, time]) => {
       const arr = f.formatToParts(time, unit);
       const digit = arr.find(({ type }) => type === 'integer').value;
-      const unit = arr.find(({ type, value }) => type === 'literal' && value.startsWith(' ')).value;
-      return `${digit}${unit}`;
+      const timeUnit = arr.find(({ type, value }) => type === 'literal' && value.startsWith(' ')).value.split(' ')[1];
+      return `${digit} ${timeUnit}`;
     })
     .join(', ');
 
