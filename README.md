@@ -916,3 +916,47 @@ animation(0.5);   // returns 550, 50% of the animation is between 100 and 1000 s
 animation(0);     // returns 1, 0% of the animation is 0 array element
 animation(0.32);  // returns 64, 0.32 is in 60% transition between 10 and 100
 ```
+
+
+<hr>
+<br>
+
+## **Get relative time difference string in any locale**
+
+`start` and `end` are set as default to current time
+
+`format` allows you to customize teh output string
+
+`locale` sets string output language
+
+
+Uses npm [timefiff](https://www.npmjs.com/package/timediff) package
+```javascript
+import timediff from 'timediff';
+
+const getTimeString = ({
+  start = 'now',
+  end = 'now',
+  format = 'YMDHmS',
+  locale = 'en-US',
+}) => {
+  const order = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+  const f = new Intl.RelativeTimeFormat(locale, { style: 'long', localeMatcher: 'lookup', numeric: 'always' });
+  const difference = timediff(start, end, format);
+  const isPast = Object.values(difference).some(value => value < 0);
+  const string = Object.entries(difference)
+    .sort((...args) => {
+      const [a, b] = args.map(key => order.indexOf(key[0]));
+      return a - b;
+    })
+    .filter(([, time]) => time)
+    .map(([unit, time]) => f.format(time, unit))
+    .map(string => string.split(' ').slice(isPast ? 0 : 1, isPast ? -1 : undefined).join(' '))
+    .join(', ');
+
+  return string;
+};
+
+getTimeString({ end: new Date('2023-01-01'), locale: 'en-US' });    // returns "4 days, 8 hours, 25 minutes, 18 seconds"
+getTimeString({ end: new Date('2023-01-01'), locale: 'pl-PL' });    // returns "4 dni, 8 godzin, 25 minut, 18 sekund"
+```
