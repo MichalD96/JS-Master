@@ -951,8 +951,8 @@ const getTimeString = ({
       return a - b;
     })
     .filter(([, time]) => time)
-    .map(([unit, time]) => f.formatToParts(time, unit))
-    .map(arr => {
+    .map(([unit, time]) => {
+      const arr = f.formatToParts(time, unit);
       const digit = arr.find(({ type }) => type === 'integer').value;
       const unit = arr.find(({ type, value }) => type === 'literal' && value.startsWith(' ')).value;
       return `${digit}${unit}`;
