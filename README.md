@@ -931,6 +931,7 @@ animation(0.32);  // returns 64, 0.32 is in 60% transition between 10 and 100
 
 
 Uses npm [timefiff](https://www.npmjs.com/package/timediff) package
+
 ```javascript
 import timediff from 'timediff';
 
