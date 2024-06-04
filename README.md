@@ -965,3 +965,31 @@ const getTimeString = ({
 getTimeString({ end: new Date('2023-01-01'), locale: 'en-US' });    // returns "4 days, 8 hours, 25 minutes, 18 seconds"
 getTimeString({ end: new Date('2023-01-01'), locale: 'pl-PL' });    // returns "4 dni, 8 godzin, 25 minut, 18 sekund"
 ```
+
+<hr>
+<br>
+
+## **Parse date and time**
+
+```javascript
+import moment from 'moment';
+
+const parseDate = (date = new Date()) => {
+  const momentDate = moment(date);
+  return {
+    week: momentDate.isoWeek(),
+    hours: momentDate.utc().hours(),
+    minutes: momentDate.utc().minutes(),
+    seconds: momentDate.utc().seconds(),
+    now: momentDate.toDate(),
+    day: momentDate.utc().hours(0).minutes(0).seconds(0).milliseconds(0).toDate(),
+    monday: momentDate.utc().isoWeekday(1).startOf('day').toDate(),
+    sunday: momentDate.utc().isoWeekday(7).startOf('day').toDate(),
+    monthStart: momentDate.utc().startOf('month').toDate(),
+    monthEnd: momentDate.utc().endOf('month').toDate(),
+    yearStart: momentDate.utc().startOf('year').toDate(),
+    yearEnd: momentDate.utc().endOf('year').toDate(),
+  };
+};
+
+```
