@@ -975,21 +975,33 @@ getTimeString({ end: new Date('2023-01-01'), locale: 'pl-PL' });    // returns "
 import moment from 'moment';
 
 const parseDate = (date = new Date()) => {
-  const momentDate = moment(date);
+  if (!(date instanceof Date) && !isNaN(Number(date))) {
+    date = new Date(Number(date));
+  }
+  const timezoneString = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const momentDate = moment.tz(date, timezoneString);
+
   return {
     week: momentDate.isoWeek(),
-    hours: momentDate.utc().hours(),
-    minutes: momentDate.utc().minutes(),
-    seconds: momentDate.utc().seconds(),
     now: momentDate.toDate(),
-    day: momentDate.utc().hours(0).minutes(0).seconds(0).milliseconds(0).toDate(),
-    monday: momentDate.utc().isoWeekday(1).startOf('day').toDate(),
-    sunday: momentDate.utc().isoWeekday(7).startOf('day').toDate(),
-    monthStart: momentDate.utc().startOf('month').toDate(),
-    monthEnd: momentDate.utc().endOf('month').toDate(),
-    yearStart: momentDate.utc().startOf('year').toDate(),
-    yearEnd: momentDate.utc().endOf('year').toDate(),
+    day: momentDate.startOf('day').toDate(),
+    monday: momentDate.clone().isoWeekday(1).startOf('day').toDate(),
+    sunday: momentDate.clone().isoWeekday(7).startOf('day').toDate(),
+    monthStart: momentDate.clone().startOf('month').toDate(),
+    monthEnd: momentDate.clone().endOf('month').toDate(),
+    yearStart: momentDate.clone().startOf('year').toDate(),
+    yearEnd: momentDate.clone().endOf('year').toDate(),
+    addDays(days) {
+      const newDate = momentDate.clone().add(days, 'days').toDate();
+      return parseDate(newDate);
+    },
   };
 };
+
+// How to use:
+const result = parseDate(new Date());
+console.log(result);
+console.log('Add 5 days:', result.addDays(5));
+console.log('Subtract 3 days:', result.addDays(-3));
 
 ```
