@@ -972,7 +972,7 @@ getTimeString({ end: new Date('2023-01-01'), locale: 'pl-PL' });    // returns "
 ## **Parse date and time**
 
 ```javascript
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const parseDate = (date = new Date()) => {
   if (!(date instanceof Date) && !isNaN(Number(date))) {
