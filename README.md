@@ -983,6 +983,7 @@ const parseDate = (date = new Date()) => {
 
   return {
     week: momentDate.isoWeek(),
+    weekDay: momentDate.isoWeekday(),
     now: momentDate.toDate(),
     day: momentDate.startOf('day').toDate(),
     monday: momentDate.clone().isoWeekday(1).startOf('day').toDate(),
