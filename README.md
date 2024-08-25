@@ -1006,3 +1006,87 @@ console.log('Add 5 days:', result.addDays(5));
 console.log('Subtract 3 days:', result.addDays(-3));
 
 ```
+
+<hr>
+<br>
+
+## **Recursively join two objects**
+Function assumes `oldData` is stale object, or part of incoming data, `newData` is new incoming data that may be only part of final object.
+Every field maintain its original type, objects like arrays, sets, maps are joined, primitive values overwrite.
+Fields not included in `newData` remains unchanged until `forceOverwrite` is set to true.
+Fields with not matching types will be overwrite to `newData`.
+
+```javascript
+const resourceJoin = (oldData = {}, newData = {}, forceOverwrite = false) => {
+  if (forceOverwrite) {
+    return { ...newData };
+  }
+
+  const newResource = { ...oldData };
+
+  for (const key in newData) {
+    const typeA = guessType(newResource[key]);
+    const typeB = guessType(newData[key]);
+
+    if (typeA !== typeB) {
+      newResource[key] = newData[key];
+      continue;
+    }
+
+    switch (typeB) {
+      case 'scalar':
+      case 'function':
+      case 'symbol':
+      case 'date':
+      case 'regexp':
+      case 'string':
+      case 'number':
+      case 'boolean':
+      case 'bigint':
+      case 'promise':
+      case 'typedarray':
+      case 'weakmap':
+      case 'weakset':
+        newResource[key] = newData[key];
+        break;
+      case 'array':
+        newResource[key] = [...new Set([...(newResource[key] || []), ...newData[key]])];
+        break;
+      case 'map':
+        newResource[key] = new Map([...newResource[key], ...newData[key]]);
+        break;
+      case 'set':
+        newResource[key] = new Set([...(newResource[key] || []), ...newData[key]]);
+        break;
+      case 'object':
+        newResource[key] = resourceJoin(newResource[key] || {}, newData[key], forceOverwrite);
+        break;
+      default:
+        newResource[key] = undefined;
+    }
+  }
+
+  return newResource;
+};
+
+// Helper function
+function guessType (element) {
+  if (element === null) return 'scalar';
+  if (typeof element !== 'object') return typeof element;
+  if (Array.isArray(element)) return 'array';
+  if (element instanceof Date) return 'date';
+  if (element instanceof Map) return 'map';
+  if (element instanceof Set) return 'set';
+  if (element instanceof WeakMap) return 'weakmap';
+  if (element instanceof WeakSet) return 'weakset';
+  if (element instanceof RegExp) return 'regexp';
+  if (element instanceof Promise) return 'promise';
+  if (ArrayBuffer.isView(element)) return 'typedarray';
+  return 'object';
+};
+
+```
+
+Function made in purpose of API optimization.
+You can request only currently needed data, and then request another part without sending the same data twice.
+Especially useful with pagination, and big data objects.
