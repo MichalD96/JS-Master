@@ -762,27 +762,28 @@ Required npm modules: fs-extra, path
 @returns { Object Promise => Array }
 **/
 
-function getAllFilesAsync({
+module.exports.getAllFilesAsync = ({
   directory,
   extensions = [],
   excludedFolders = [],
-  customFilter = () => true,
-}) {
+  filesFilter = () => true,
+}) => {
   return (async function getFiles(directory) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const files = entries
       .filter((file) => !file.isDirectory())
-      .map((file) => ({ ...file, path: path.join(directory, file.name), ext: path.extname(file.name) }));
-
+      .map((file) => ({
+        ...file,
+        path: path.join(directory, file.name),
+        ext: path.extname(file.name),
+      }));
     const folders = entries.filter((folder) => folder.isDirectory() && !excludedFolders.includes(folder.name));
-
     for (const folder of folders) {
-      files.push(...await getFiles(`${directory}${folder.name}/`));
+      files.push(...await getFiles(path.join(directory, folder.name)));
     }
-
     return files
       .filter(({ ext }) => extensions.length ? extensions.some(extension => ext.endsWith(extension)) : true)
-      .filter(customFilter);
+      .filter(filesFilter);
   })(directory);
 };
 ```
