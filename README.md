@@ -771,7 +771,10 @@ module.exports.getAllFilesAsync = ({
   return (async function getFiles(directory) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const files = entries
-      .filter((file) => !file.isDirectory())
+      .filter((file) => {
+        const stats = await fs.lstat(path.join(directory, file.name));
+        return !file.isDirectory() && !stats.isSymbolicLink();
+      })
       .map((file) => ({
         ...file,
         path: path.join(directory, file.name),
@@ -1091,3 +1094,93 @@ function guessType (element) {
 Function made in purpose of API optimization.
 You can request only currently needed data, and then request another part without sending the same data twice.
 Especially useful with pagination, and big data objects.
+
+
+<hr>
+<br>
+
+## **Sequential countdowns from timestamp**
+First countdown starts counting from given timestamp.
+Second countdown starts when first countdown reaches 00:00 and so on every next countdown.
+
+```javascript
+class Timer {
+  constructor(startTimestamp, timers) {
+    this.timers = timers;
+    this.startTimestamp = startTimestamp;
+    this.currentIndex = 0;
+    this.timeElapsed = Math.floor((new Date().getTime() - startTimestamp) / 1000);
+    this.remainingTime = 0;
+    this.setupInitialTimer();
+  }
+
+  getTotalTimeInSeconds(timer) {
+    return timer.minutes * 60 + timer.seconds;
+  }
+
+  setupInitialTimer() {
+    let { timeElapsed } = this;
+
+    while (this.currentIndex < this.timers.length) {
+      const totalDuration = this.getTotalTimeInSeconds(this.timers[this.currentIndex]);
+
+      if (timeElapsed >= totalDuration) {
+        timeElapsed -= totalDuration;
+        this.currentIndex++;
+      } else {
+        this.remainingTime = totalDuration - timeElapsed;
+        this.timeElapsed = 0;
+        break;
+      }
+    }
+  }
+
+  tick() {
+    if (this.currentIndex >= this.timers.length) {
+      return { text: 'All timers completed', minutes: 0, seconds: 0, finished: true };
+    }
+
+    if (this.remainingTime <= 0) {
+      this.currentIndex++;
+      if (this.currentIndex >= this.timers.length) {
+        return { text: 'All timers completed', minutes: 0, seconds: 0, finished: true };
+      }
+      this.remainingTime = this.getTotalTimeInSeconds(this.timers[this.currentIndex]);
+    }
+
+    const minutes = Math.floor(this.remainingTime / 60);
+    const seconds = this.remainingTime % 60;
+
+    this.remainingTime--;
+
+    return {
+      text: this.timers[this.currentIndex].text,
+      minutes,
+      seconds,
+    };
+  }
+}
+
+```
+
+
+How to use:
+
+```javascript
+const timers = [
+  { text: 'Timer One', minutes: 48, seconds: 0 },
+  { text: 'Timer Two', minutes: 90, seconds: 30 },
+  // more countdowns
+];
+
+const timer = new Timer(providedTimestamp, timers);
+
+timer.interval = setInterval(() => {
+  const currentTimer = timer.tick();
+  console.log(currentTimer);
+
+  if (currentTimer.finished) {
+    clearInterval(timer.interval);
+  }
+}, 1000);
+```
