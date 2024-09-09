@@ -1173,7 +1173,7 @@ const timers = [
   // more countdowns
 ];
 
-const timer = new Timer(providedTimestamp, timers);
+const timer = new Timer(1725846727270, timers);
 
 timer.interval = setInterval(() => {
   const currentTimer = timer.tick();
